@@ -1,13 +1,28 @@
 import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-const server = express();
+dotenv.config();
 
-server.get("/", (req, res) => {
-  res.send("Welcome to Bitespeed");
+const app = express();
+
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.error("MongoDB connection error:", error);
+  });
+
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Server is running!" });
 });
 
-let PORT = 3200;
+const PORT = process.env.PORT || 3000;
 
-server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
+export default app;
