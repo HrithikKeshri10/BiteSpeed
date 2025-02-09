@@ -15,6 +15,10 @@ mongoose
     console.error("MongoDB connection error:", error);
   });
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/api", routes);
+
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is running!" });
 });
